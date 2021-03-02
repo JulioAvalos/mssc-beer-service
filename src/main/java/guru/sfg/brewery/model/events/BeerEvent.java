@@ -8,14 +8,16 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+/**
+ * Created by jt on 2019-07-21.
+ */
 @Data
+@AllArgsConstructor
 @Builder
 @NoArgsConstructor
-@AllArgsConstructor
 public class BeerEvent implements Serializable {
 
-    private static final long serialVersionUID = -2590898292156464912L;
+    static final long serialVersionUID = -5781515597148163111L;
 
     private BeerDto beerDto;
-
 }

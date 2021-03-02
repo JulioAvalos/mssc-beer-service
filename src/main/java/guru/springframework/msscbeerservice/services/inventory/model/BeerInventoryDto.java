@@ -8,10 +8,13 @@ import lombok.NoArgsConstructor;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+/**
+ * Created by jt on 2019-06-07.
+ */
 @Data
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class BeerInventoryDto {
     private UUID id;
     private OffsetDateTime createdDate;
