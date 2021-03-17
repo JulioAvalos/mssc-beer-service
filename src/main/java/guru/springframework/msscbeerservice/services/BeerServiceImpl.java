@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Service
 public class BeerServiceImpl implements BeerService {
+
     private final BeerRepository beerRepository;
     private final BeerMapper beerMapper;
 

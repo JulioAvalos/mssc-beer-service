@@ -18,7 +18,7 @@ import java.util.UUID;
 /**
  * Created by jt on 2019-06-07.
  */
-@Profile("!local-discovery")
+//@Profile("!local-discovery")
 @Slf4j
 @ConfigurationProperties(prefix = "sfg.brewery", ignoreUnknownFields = false)
 @Component
