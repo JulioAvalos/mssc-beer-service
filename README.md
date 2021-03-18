@@ -9,3 +9,4 @@ Source code for Beer Service!
 | Brewery Beer Service | 8080 |
 | [Brewery Beer Order Service](https://github.com/JulioAvalos/mssc-beer-order-service) | 8081 |
 | [Brewery Beer Inventory Service](https://github.com/JulioAvalos/mssc-beer-inventory-service) | 8082 |
+| [Brewery Beer Inventory Failover Service](https://github.com/JulioAvalos/mssc-inventory-failover) | 8083 |
