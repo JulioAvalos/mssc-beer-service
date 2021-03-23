@@ -1,5 +1,26 @@
 version: '3.8'
 services:
+    elasticsearch:
+      image: docker.elastic.co/elasticsearch/elasticsearch:7.11.2
+      ports:
+        - 9200:9200
+      environment:
+        discovery.type: single-node
+    kibana:
+      image: docker.elastic.co/kibana/kibana:7.11.2
+      ports:
+        - 5601:5601
+      restart: on-failure
+      depends_on:
+        - elasticsearch
+    filebeat:
+      image: docker.elastic.co/beats/filebeat:7.11.2
+      volumes:
+        - ./filebeat/filebeat.docker.yml:/usr/share/filebeat/filebeat.yml:ro # configuration file
+        - /var/lib/docker/containers:/var/lib/docker/containers:ro # docker logs
+        - /var/run/docker.sock:/var/run/docker.sock:ro # additional information about containers
+      user: root
+      restart: on-failure
     jms:
       image: vromero/activemq-artemis
       ports:
@@ -39,6 +60,9 @@ services:
         SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/beerinventoryservice?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
         EUREKA_INSTANCE_PREFER_IP_ADDRESS: 'true'
       restart: on-failure
+      labels:
+        collect_logs_with_filebeats: "true"
+        decode_log_event_to_json_object: "true"
     inventory-failover:
       image: sfgbeerworks/sfg-brewery-inventory-failover
       ports:
@@ -50,6 +74,9 @@ services:
         EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://netflix:eureka@eureka:8761/eureka/
         EUREKA_INSTANCE_PREFER_IP_ADDRESS: 'true'
       restart: on-failure
+      labels:
+        collect_logs_with_filebeats: 'true'
+        decode_log_event_to_json_object: "true"
     beer-service:
       image: sfgbeerworks/sfg-brewery-beer-service
       ports:
@@ -67,6 +94,9 @@ services:
         SPRING_DATASOURCE_URL: jdbc:mysql://host.docker.internal:3306/beerservice?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC
         EUREKA_INSTANCE_PREFER_IP_ADDRESS: 'true'
       restart: on-failure
+      labels:
+        collect_logs_with_filebeats: 'true'
+        decode_log_event_to_json_object: "true"
     order-service:
       image: sfgbeerworks/sfg-brewery-order-service
       ports:
@@ -85,6 +115,9 @@ services:
         SFG_BREWERY_BEER-SERVICE-HOST: http://beer-service:8080
         EUREKA_INSTANCE_PREFER_IP_ADDRESS: 'true'
       restart: on-failure
+      labels:
+        collect_logs_with_filebeats: 'true'
+        decode_log_event_to_json_object: "true"
     gateway:
       image: sfgbeerworks/sfg-brewery-gateway
       ports:
@@ -101,3 +134,6 @@ services:
         SPRING_PROFILES_ACTIVE: local-discovery,localmysql
         EUREKA_INSTANCE_PREFER_IP_ADDRESS: 'true'
       restart: on-failure
+      labels:
+        collect_logs_with_filebeats: 'true'
+        decode_log_event_to_json_object: "true"
